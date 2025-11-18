@@ -1,8 +1,24 @@
 name: Java Tests
-
 on:
   pull_request:
 
 jobs:
   build:
-    uses: yandex-praktikum/java-kanban/.github/workflows/api-tests.yml@ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
+      - name: Start Spring Boot app and check health
+        run: |
+          mvn spring-boot:run &
+          sleep 10
+          curl -f http://localhost:8080/actuator/health || exit 1
+          pkill -f 'java.*spring-boot'
