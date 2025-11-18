@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @Data
 public class User {
     long id;
+    @NotBlank
     @NotNull
     @Email String email;
     @Pattern(regexp = "^\\S+$", message = "Логин не может содержать пробел или быть пустым")
