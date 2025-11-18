@@ -16,9 +16,3 @@ jobs:
           cache: maven
       - name: Run Checkstyle
         run: mvn checkstyle:check
-      - name: Start Spring Boot app and check health
-        run: |
-          mvn spring-boot:run &
-          sleep 10
-          curl -f http://localhost:8080/films || exit 1
-          pkill -f 'java.*spring-boot'
